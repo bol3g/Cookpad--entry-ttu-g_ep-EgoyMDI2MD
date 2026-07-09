@@ -16,15 +16,13 @@ html, body {
     z-index: 1;
 }
 
-/* カメラ映像を右下に小さく表示（不要なら削除） */
-#preview {
+/* 録画中の黒いオーバーレイ */
+#recordOverlay {
     position: fixed;
-    right: 20px;
-    bottom: 90px;
-    width: 220px;
-    border-radius: 10px;
-    z-index: 20;
+    inset: 0;
     background: #000;
+    z-index: 10;      /* iframeより上、ボタンより下 */
+    display: none;    /* 初期状態では非表示 */
 }
 
 /* ボタンを最前面 */
