@@ -25,19 +25,34 @@ html, body {
     display: none;    /* 初期状態では非表示 */
 }
 
-/* ボタンを最前面 */
-.buttons {
+
+/* ボタン共通 */
+.buttons button {
     position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 12px;
+    height: 100px;
+    font-size: 24px;
+    cursor: pointer;
+    border-radius: 0;
     z-index: 1000;
 }
 
-.buttons button {
-    padding: 12px 24px;
-    font-size: 16px;
-    cursor: pointer;
+/* 開始ボタン 左下 幅50vw */
+#startBtn {
+    left: 0;
+    bottom: 0;
+    width: 50vw;
+}
+
+/* 終了ボタン 右下 幅200px */
+#stopBtn {
+    right: 0;
+    bottom: 0;
+    width: 200px;
+}
+
+/* 確定ボタン (10,300) */
+#saveBtn {
+    left: 10px;
+    top: 300px;
+    width: 200px;
 }
