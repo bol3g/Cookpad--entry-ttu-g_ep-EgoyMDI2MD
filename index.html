@@ -3,21 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>動画録画</title>
+    <title>Title</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body style="background-color:black;">
+    <!-- 全画面iframe -->
+    <iframe
+        id="mainFrame"
+        src=""
+        title="Main Frame">
+    </iframe>
 
-<h2>動画録画</h2>
+    <!-- カメラプレビュー（必要なら小窓表示） -->
+    <video id="preview" autoplay playsinline muted></video>
 
-<video id="preview" autoplay playsinline muted></video>
+    <!-- ボタンUI -->
+    <div class="buttons">
+        <button id="startBtn">録画開始</button>
+        <button id="stopBtn" disabled>録画停止</button>
+    </div>
 
-<div class="buttons">
-    <button id="startBtn">録画開始</button>
-    <button id="stopBtn" disabled>録画停止</button>
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>
