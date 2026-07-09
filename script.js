@@ -8,37 +8,7 @@ let recorder;
 let chunks = [];
 let recordedBlob = null;
 
-    startBtn.onclick = async () => {
-
-    chunks = [];
-    recordedBlob = null;
-
-    stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-            facingMode: {
-                ideal: "environment"
-            }
-        },
-        audio: true
-    });
-
-    overlay.style.display = "block";
-
-    recorder = new MediaRecorder(stream);
-
-    recorder.ondataavailable = e => {
-        if (e.data.size > 0) {
-            chunks.push(e.data);
-        }
-    };
-
-    recorder.start();
-
-    startBtn.disabled = true;
-    stopBtn.disabled = false;
-    saveBtn.disabled = true;
-};
-
+// 開始
 startBtn.onclick = async () => {
 
     chunks = [];
@@ -57,10 +27,25 @@ startBtn.onclick = async () => {
 
     recorder = new MediaRecorder(stream);
 
-    recorder.ondataavailable = e => {
+    recorder.ondataavailable = (e) => {
         if (e.data.size > 0) {
             chunks.push(e.data);
         }
+    };
+
+    recorder.onstop = () => {
+
+        recordedBlob = new Blob(chunks, {
+            type: recorder.mimeType
+        });
+
+        stream.getTracks().forEach(track => track.stop());
+
+        overlay.style.display = "none";
+
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        saveBtn.disabled = false;
     };
 
     recorder.start();
@@ -70,25 +55,16 @@ startBtn.onclick = async () => {
     saveBtn.disabled = true;
 };
 
-recorder.onstop = () => {
-
-    recordedBlob = new Blob(chunks, {
-        type: recorder.mimeType
-    });
-
-    stream.getTracks().forEach(track => track.stop());
-
-    overlay.style.display = "none";
-
-    startBtn.disabled = false;
-    stopBtn.disabled = true;
-    saveBtn.disabled = false;
-};
-
+// 終了
 stopBtn.onclick = () => {
-    recorder.stop();
+
+    if (recorder && recorder.state === "recording") {
+        recorder.stop();
+    }
+
 };
 
+// 確定（ダウンロード）
 saveBtn.onclick = () => {
 
     if (!recordedBlob) return;
@@ -98,8 +74,8 @@ saveBtn.onclick = () => {
     const a = document.createElement("a");
     a.href = url;
 
-    if (recorder.mimeType.includes("mp4")) {
-        a.download = "test.mp4";
+    if (recordedBlob.type.includes("mp4")) {
+        a.download = "movie.mp4";
     } else {
         a.download = "movie.webm";
     }
