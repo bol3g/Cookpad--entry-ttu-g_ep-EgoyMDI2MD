@@ -1,12 +1,10 @@
-const preview = document.getElementById("preview");
+const overlay = document.getElementById("recordOverlay");
 const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
 
 let stream;
 let recorder;
-let chunks = [];
-
-startBtn.onclick = async () => {
+let chunks = [];startBtn.onclick = async () => {
 
     chunks = [];
 
@@ -18,32 +16,33 @@ startBtn.onclick = async () => {
         },
         audio: true
     });
-    preview.srcObject = stream;
+
+    // 録画開始で黒画面表示
+    overlay.style.display = "block";
 
     recorder = new MediaRecorder(stream);
 
-    recorder.ondataavailable = e=>{
-        if(e.data.size>0){
+    recorder.ondataavailable = e => {
+        if (e.data.size > 0) {
             chunks.push(e.data);
         }
     };
 
-    recorder.onstop = ()=>{
+    recorder.onstop = () => {
 
-        const blob = new Blob(chunks,{
-            type:recorder.mimeType
+        const blob = new Blob(chunks, {
+            type: recorder.mimeType
         });
 
         const url = URL.createObjectURL(blob);
 
-        const a=document.createElement("a");
-        a.href=url;
+        const a = document.createElement("a");
+        a.href = url;
 
-        // 拡張子は環境によって変わる
-        if(recorder.mimeType.includes("mp4")){
-            a.download="text";//movie.mp4
-        }else{
-            a.download="movie.webm";
+        if (recorder.mimeType.includes("mp4")) {
+            a.download = "test.mp4";
+        } else {
+            a.download = "movie.webm";
         }
 
         document.body.appendChild(a);
@@ -52,23 +51,21 @@ startBtn.onclick = async () => {
 
         URL.revokeObjectURL(url);
 
-        stream.getTracks().forEach(track=>track.stop());
+        stream.getTracks().forEach(track => track.stop());
 
-        preview.srcObject=null;
+        // 黒画面を非表示
+        overlay.style.display = "none";
 
-        startBtn.disabled=false;
-        stopBtn.disabled=true;
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
     };
 
     recorder.start();
 
-    startBtn.disabled=true;
-    stopBtn.disabled=false;
-
+    startBtn.disabled = true;
+    stopBtn.disabled = false;
 };
 
-stopBtn.onclick=()=>{
-
+stopBtn.onclick = () => {
     recorder.stop();
-
 };
