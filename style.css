@@ -34,6 +34,7 @@ html, body {
     cursor: pointer;
     border-radius: 0;
     z-index: 1000;
+        opacity: 0;
 }
 
 /* 開始ボタン 左下 幅50vw */
